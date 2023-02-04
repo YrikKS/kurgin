@@ -7,14 +7,22 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="ru.kurgin.tinkoff.home.HomeFragment"
+        android:name="ru.kurgin.tinkoff.homeFragment.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_navigation_home_to_filmDetailsFragment"
+            app:destination="@id/filmDetailsFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_favorites"
-        android:name="ru.kurgin.tinkoff.favorite.FavoriteFragment"
+        android:name="ru.kurgin.tinkoff.favoriteMoviesFragment.FavoriteFragment"
         android:label="@string/title_favourites"
         tools:layout="@layout/fragment_favorite" />
+    <fragment
+        android:id="@+id/filmDetailsFragment"
+        android:name="ru.kurgin.tinkoff.filmDetailsFragment.FilmDetailsFragment"
+        android:label="FilmDetailsFragment" />
 
 </navigation>

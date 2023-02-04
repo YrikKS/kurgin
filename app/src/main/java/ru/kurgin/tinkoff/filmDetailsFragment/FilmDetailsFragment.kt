@@ -1,4 +1,4 @@
-package ru.kurgin.tinkoff.favorite
+package ru.kurgin.tinkoff.filmDetailsFragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,14 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import ru.kurgin.tinkoff.databinding.FragmentFavoriteBinding
+import ru.kurgin.tinkoff.databinding.FragmentFilmDetailsBinding
 
-class FavoriteFragment : Fragment() {
-
-    private var _binding: FragmentFavoriteBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
+class FilmDetailsFragment : Fragment() {
+    private var _binding: FragmentFilmDetailsBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -21,11 +17,9 @@ class FavoriteFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val favoriteViewModel =
-            ViewModelProvider(this)[FavoriteViewModel::class.java]
+        val filmDetailsViewModel = ViewModelProvider(this)[FilmDetailsViewModel::class.java]
 
-        _binding = FragmentFavoriteBinding.inflate(inflater, container, false)
-
+        _binding = FragmentFilmDetailsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
