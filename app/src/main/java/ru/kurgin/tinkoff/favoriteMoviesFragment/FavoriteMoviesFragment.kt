@@ -1,4 +1,4 @@
-package ru.kurgin.tinkoff.homeFragment
+package ru.kurgin.tinkoff.favoriteMoviesFragment
 
 import android.os.Bundle
 import android.text.Editable
@@ -7,42 +7,43 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import org.w3c.dom.Text
-import ru.kurgin.tinkoff.*
-import ru.kurgin.tinkoff.databinding.FragmentHomeBinding
+import ru.kurgin.tinkoff.Constants
+import ru.kurgin.tinkoff.FilmsAdapter
+import ru.kurgin.tinkoff.IFilmActionListener
+import ru.kurgin.tinkoff.MainActivity
+import ru.kurgin.tinkoff.databinding.FragmentFavoriteBinding
 import ru.kurgin.tinkoff.kinopoiskApi.classFromJson.Film
 
-class HomeFragment : Fragment() {
+class FavoriteMoviesFragment : Fragment() {
 
-    private var _binding: FragmentHomeBinding? = null
+    private var _binding: FragmentFavoriteBinding? = null
+
     private val binding get() = _binding!!
     private lateinit var adapter: FilmsAdapter
-    private lateinit var homeViewModel: HomeViewModel
+    private lateinit var favoriteMoviesViewModel: FavoriteMoviesViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
-//        binding.button.setOnClickListener {
-//            findNavController().navigate(R.id.action_navigation_home_to_filmDetailsFragment)
-//        }
-        setupRecyclerView()
+        favoriteMoviesViewModel = FavoriteMoviesVMProvider(
+            (activity as MainActivity?)?.dbManager!!,
+            activity?.application!!
+        ).create(FavoriteMoviesViewModel::class.java)
+        _binding = FragmentFavoriteBinding.inflate(inflater, container, false)
+        createRecycleView()
         setupSearch()
         return binding.root
     }
 
+
     private fun setupSearch() {
-        binding.searchTextFieldHome.addTextChangedListener(object : TextWatcher {
+        binding.searchTextField.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 println("beforeTextChanged")
             }
@@ -53,7 +54,7 @@ class HomeFragment : Fragment() {
 
             override fun afterTextChanged(s: Editable?) {
                 if (s?.length!! > 0) {
-                    homeViewModel.listFilms.value?.filter {
+                    favoriteMoviesViewModel.listFilms.value?.filter {
                         it.nameRu?.contains(s.subSequence(0, s.length - 1), true) ?: false
                     }.apply {
                         if (this?.size!! > 0) {
@@ -67,9 +68,8 @@ class HomeFragment : Fragment() {
                     }
                 } else {
                     adapter.films.clear()
-                    homeViewModel.listFilms.value?.forEach {
+                    favoriteMoviesViewModel.listFilms.value?.forEach {
                         adapter.films.add(it)
-//                        adapter.notifyItemRangeInserted(adapter.films.size - 1, 1)
                     }
                     adapter.notifyDataSetChanged()
                 }
@@ -78,53 +78,41 @@ class HomeFragment : Fragment() {
         })
     }
 
-    private fun setupRecyclerView() {
+    private fun createRecycleView() {
         adapter = FilmsAdapter(object : IFilmActionListener {
             override fun onFilmDetails(film: Film) {
                 Log.i(Constants.TAG_FOR_LOG, "click on ${film.filmId}")
                 val action =
-                    HomeFragmentDirections.actionNavigationHomeToFilmDetailsFragment(filmId = film.filmId)
+                    FavoriteMoviesFragmentDirections.actionNavigationFavoritesToFilmDetailsFragment(
+                        filmId = film.filmId
+                    )
                 findNavController().navigate(action)
             }
 
             override fun addFilmToFavorite(film: Film) {
                 Log.i(Constants.TAG_FOR_LOG, "long click on ${film.nameRu}")
-                (activity as MainActivity).dbManager.insertToDb(film)
             }
         }, this)
-        binding.recyclerViewHome.layoutManager = LinearLayoutManager(context)
-        binding.recyclerViewHome.adapter = adapter
+        binding.recyclerViewFavorite.layoutManager = LinearLayoutManager(context)
+        binding.recyclerViewFavorite.adapter = adapter
         addObserveForRecycleView()
-
-        binding.recyclerViewHome.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                if (!recyclerView.canScrollVertically(1)) {
-                    homeViewModel.setUpdateFilms()
-                }
-            }
-        })
     }
 
     private fun addObserveForRecycleView() {
         val observer = Observer<List<Film>> { value ->
-            value.filterIndexed { index, it ->
-                if (adapter.films.size <= index) {
-                    return@filterIndexed true
-                } else {
-                    return@filterIndexed adapter.films[index].filmId != it.filmId
-                }
-            }.forEach {
+            adapter.films.clear()
+            adapter.notifyDataSetChanged()
+            value.forEach {
+                println(it.nameRu)
                 adapter.films.add(it)
                 adapter.notifyItemRangeInserted(adapter.films.size - 1, 1)
             }
         }
-        homeViewModel.listFilms.observe(viewLifecycleOwner, observer)
+        favoriteMoviesViewModel.listFilms.observe(viewLifecycleOwner, observer)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-
 }

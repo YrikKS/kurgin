@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -32,6 +33,7 @@ class FilmsAdapter(
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemFilmsBinding.inflate(inflater, parent, false)
         binding.root.setOnClickListener(this)
+        binding.root.setOnLongClickListener(this)
         return FilmsViewHolder(binding)
     }
 
@@ -86,6 +88,7 @@ class FilmsAdapter(
                 })
                 .into(filmPoster)
         }
+
     }
 
     class FilmsViewHolder(

@@ -1,16 +1,16 @@
 package ru.kurgin.tinkoff.kinopoiskApi.classFromJson
 
 data class Film(
-    val countries: List<Country?>?,
+    val countries: List<Country?>? = null,
     val filmId: Int,
-    val filmLength: String?,
-    val genres: List<Genre?>?,
-    val nameEn: String?,
-    val nameRu: String?,
-    val posterUrl: String?,
-    val posterUrlPreview: String?,
-    val rating: String?,
-    val ratingChange: String?,
-    val ratingVoteCount: Int?,
-    val year: String?
+    val filmLength: String? = null,
+    val genres: List<Genre?>? = null,
+    val nameEn: String? = null,
+    val nameRu: String? = null,
+    val posterUrl: String? = null,
+    val posterUrlPreview: String? = null,
+    val rating: String? = null,
+    val ratingChange: String? = null,
+    val ratingVoteCount: Int? = null,
+    val year: String? = null
 )
