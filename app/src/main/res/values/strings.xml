@@ -5,4 +5,5 @@
     <string name="title_nav_bar_home">Home</string>
     <string name="title_favourites">Favourites</string>
     <string name="search_field_text">Search</string>
+    <string name="title_genre">Жанр:</string>
 </resources>

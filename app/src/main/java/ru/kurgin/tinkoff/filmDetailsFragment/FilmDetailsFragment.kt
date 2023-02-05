@@ -79,6 +79,9 @@ class FilmDetailsFragment : Fragment() {
                     filmDetails.genres?.forEach { genre ->
                         genre.genre?.let { it1 -> addViewToFlow(binding.flowGenre, it1) }
                     }
+                    filmDetails.countries?.forEach { country ->
+                        country.country?.let { it1 -> addViewToFlow(binding.flowCountry, it1) }
+                    }
                     return false
                 }
 
@@ -93,6 +96,9 @@ class FilmDetailsFragment : Fragment() {
                     applyVisibilityToWidgets(View.VISIBLE)
                     filmDetails.genres?.forEach { genre ->
                         genre.genre?.let { it1 -> addViewToFlow(binding.flowGenre, it1) }
+                    }
+                    filmDetails.countries?.forEach { country ->
+                        country.country?.let { it1 -> addViewToFlow(binding.flowCountry, it1) }
                     }
                     return false
                 }
