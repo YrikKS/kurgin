@@ -12,5 +12,6 @@ data class Film(
     val rating: String? = null,
     val ratingChange: String? = null,
     val ratingVoteCount: Int? = null,
-    val year: String? = null
+    val year: String? = null,
+    val poster: ByteArray? = null
 )

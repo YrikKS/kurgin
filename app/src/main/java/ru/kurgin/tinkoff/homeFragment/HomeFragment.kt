@@ -1,5 +1,6 @@
 package ru.kurgin.tinkoff.homeFragment
 
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -7,17 +8,16 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import org.w3c.dom.Text
 import ru.kurgin.tinkoff.*
 import ru.kurgin.tinkoff.databinding.FragmentHomeBinding
 import ru.kurgin.tinkoff.kinopoiskApi.classFromJson.Film
+import java.io.ByteArrayOutputStream
 
 class HomeFragment : Fragment() {
 
@@ -25,6 +25,7 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var adapter: FilmsAdapter
     private lateinit var homeViewModel: HomeViewModel
+    private var isSearch = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,6 +54,7 @@ class HomeFragment : Fragment() {
 
             override fun afterTextChanged(s: Editable?) {
                 if (s?.length!! > 0) {
+                    isSearch = true
                     homeViewModel.listFilms.value?.filter {
                         it.nameRu?.contains(s.subSequence(0, s.length - 1), true) ?: false
                     }.apply {
@@ -72,6 +74,7 @@ class HomeFragment : Fragment() {
 //                        adapter.notifyItemRangeInserted(adapter.films.size - 1, 1)
                     }
                     adapter.notifyDataSetChanged()
+                    isSearch = false
                 }
             }
 
@@ -87,9 +90,14 @@ class HomeFragment : Fragment() {
                 findNavController().navigate(action)
             }
 
-            override fun addFilmToFavorite(film: Film) {
+            override fun addFilmToFavorite(film: Film, bitmap: Bitmap) {
                 Log.i(Constants.TAG_FOR_LOG, "long click on ${film.nameRu}")
-                (activity as MainActivity).dbManager.insertToDb(film)
+                val byteArrayOutputStream = ByteArrayOutputStream()
+                bitmap.compress(Bitmap.CompressFormat.PNG, 0, byteArrayOutputStream)
+                (activity as MainActivity).dbManager.insertToDb(
+                    film,
+                    byteArrayOutputStream.toByteArray()
+                )
             }
         }, this)
         binding.recyclerViewHome.layoutManager = LinearLayoutManager(context)
@@ -99,7 +107,7 @@ class HomeFragment : Fragment() {
         binding.recyclerViewHome.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
-                if (!recyclerView.canScrollVertically(1)) {
+                if (!recyclerView.canScrollVertically(1) && !isSearch) {
                     homeViewModel.setUpdateFilms()
                 }
             }

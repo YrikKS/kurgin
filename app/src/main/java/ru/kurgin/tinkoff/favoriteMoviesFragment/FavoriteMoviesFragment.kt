@@ -1,5 +1,6 @@
 package ru.kurgin.tinkoff.favoriteMoviesFragment
 
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -23,7 +24,7 @@ class FavoriteMoviesFragment : Fragment() {
     private var _binding: FragmentFavoriteBinding? = null
 
     private val binding get() = _binding!!
-    private lateinit var adapter: FilmsAdapter
+    private lateinit var adapter: FilmAdapterForFavoriteMovies
     private lateinit var favoriteMoviesViewModel: FavoriteMoviesViewModel
 
     override fun onCreateView(
@@ -79,7 +80,7 @@ class FavoriteMoviesFragment : Fragment() {
     }
 
     private fun createRecycleView() {
-        adapter = FilmsAdapter(object : IFilmActionListener {
+        adapter = FilmAdapterForFavoriteMovies(object : IFilmActionListener {
             override fun onFilmDetails(film: Film) {
                 Log.i(Constants.TAG_FOR_LOG, "click on ${film.filmId}")
                 val action =
@@ -89,7 +90,7 @@ class FavoriteMoviesFragment : Fragment() {
                 findNavController().navigate(action)
             }
 
-            override fun addFilmToFavorite(film: Film) {
+            override fun addFilmToFavorite(film: Film, bitmap: Bitmap) {
                 Log.i(Constants.TAG_FOR_LOG, "long click on ${film.nameRu}")
             }
         }, this)

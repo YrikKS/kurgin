@@ -1,9 +1,11 @@
 package ru.kurgin.tinkoff
 
+import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
@@ -15,13 +17,14 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import ru.kurgin.tinkoff.databinding.ItemFilmsBinding
 import ru.kurgin.tinkoff.kinopoiskApi.classFromJson.Film
+import java.io.ByteArrayOutputStream
 
 interface IFilmActionListener {
     fun onFilmDetails(film: Film)
-    fun addFilmToFavorite(film: Film)
+    fun addFilmToFavorite(film: Film, bitmap: Bitmap)
 }
 
-class FilmsAdapter(
+open class FilmsAdapter(
     private val filmActionListener: IFilmActionListener,
     private val fragment: Fragment
 ) :
@@ -45,7 +48,12 @@ class FilmsAdapter(
     }
 
     override fun onLongClick(v: View): Boolean {
-        filmActionListener.addFilmToFavorite(v.tag as Film)
+        if (v.findViewById<ImageView>(R.id.film_poster)?.drawable != null) {
+            filmActionListener.addFilmToFavorite(
+                v.tag as Film,
+                v.findViewById<ImageView>(R.id.film_poster).drawable.toBitmap()
+            )
+        }
         return true
     }
 

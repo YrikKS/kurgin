@@ -3,6 +3,7 @@ package ru.kurgin.tinkoff.dataBase
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
+import android.graphics.Bitmap
 import ru.kurgin.tinkoff.kinopoiskApi.classFromJson.Film
 
 class DbManager(context: Context) {
@@ -12,7 +13,7 @@ class DbManager(context: Context) {
     fun openDb() {
         try {
             db = dbHelper.writableDatabase
-        }catch (ex : Exception) {
+        } catch (ex: Exception) {
             ex.printStackTrace()
         }
     }
@@ -27,7 +28,7 @@ class DbManager(context: Context) {
             put(FilmsContract.COLUMN_NAME_EN, film.nameEn)
             put(FilmsContract.COLUMN_NAME_YEAR, film.year)
             put(FilmsContract.COLUMN_ID_API, film.filmId)
-//            put(FilmsContract.COLUMN_NAME_POSTER, img)
+            put(FilmsContract.COLUMN_NAME_POSTER, img)
         }
         db?.insert(FilmsContract.TABLE_NAME, null, values)
     }
@@ -55,7 +56,8 @@ class DbManager(context: Context) {
                             filmId = cursor.getInt(cursor.getColumnIndexOrThrow(FilmsContract.COLUMN_ID_API)),
                             nameEn = cursor.getString(cursor.getColumnIndexOrThrow(FilmsContract.COLUMN_NAME_EN)),
                             nameRu = cursor.getString(cursor.getColumnIndexOrThrow(FilmsContract.COLUMN_NAME_RU)),
-                            year = cursor.getString(cursor.getColumnIndexOrThrow(FilmsContract.COLUMN_NAME_YEAR))
+                            year = cursor.getString(cursor.getColumnIndexOrThrow(FilmsContract.COLUMN_NAME_YEAR)),
+                            poster = cursor.getBlob(cursor.getColumnIndexOrThrow(FilmsContract.COLUMN_NAME_POSTER))
                         )
                     )
                 }
