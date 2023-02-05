@@ -51,7 +51,7 @@ class FilmsAdapter(
         val currentFilm = films[position]
         holder.itemView.tag = currentFilm
         with(holder.binding) {
-            filmTitle.text = currentFilm.nameEn ?: currentFilm.nameRu ?: ""
+            filmTitle.text = currentFilm.nameRu ?: currentFilm.nameEn ?: ""
             yearOfRelease.text = currentFilm.year ?: ""
             progressBar.visibility = View.VISIBLE
             Glide.with(fragment)

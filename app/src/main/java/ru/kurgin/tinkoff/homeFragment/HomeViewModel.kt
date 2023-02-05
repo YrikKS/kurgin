@@ -14,17 +14,16 @@ import ru.kurgin.tinkoff.kinopoiskApi.classFromJson.Film
 
 class HomeViewModel(application: Application) : AndroidViewModel(application) {
     private val homeModel = HomeModel(this)
-    var drawToast: (String) -> Unit
+
     val listFilms = MutableLiveData<List<Film>>().apply {
         mutableListOf<Film>()
     }
     var countItemLoadInLastTime = 0
 
-    init {
-        drawToast = {
-            Toast.makeText(application.applicationContext, it, Toast.LENGTH_SHORT).show()
-        }
+    var drawToast: (String) -> Unit = {
+        Toast.makeText(application.applicationContext, it, Toast.LENGTH_SHORT).show()
     }
+
 
     init {
         setUpdateFilms()
@@ -36,7 +35,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
                 Log.i(Constants.TAG_FOR_LOG, "vm startLoad")
                 when (homeModel.getNewData()) {
                     RequestResult.OK -> {
-                        println("all ok")
+                        Log.i(Constants.TAG_FOR_LOG, "request receive access")
                         listFilms.value = homeModel.listFilms.apply {
                             countItemLoadInLastTime = size
                         }

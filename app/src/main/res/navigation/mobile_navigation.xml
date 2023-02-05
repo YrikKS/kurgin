@@ -23,7 +23,7 @@
     <fragment
         android:id="@+id/filmDetailsFragment"
         android:name="ru.kurgin.tinkoff.filmDetailsFragment.FilmDetailsFragment"
-        android:label="FilmDetailsFragment" >
+        android:label="@string/title_film_details">
         <argument
             android:name="filmId"
             app:argType="integer" />

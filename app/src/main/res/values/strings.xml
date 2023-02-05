@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">FilmsPicker</string>
     <string name="title_home">FilmsPicker</string>
+    <string name="title_film_details">Film details</string>
     <string name="title_nav_bar_home">Home</string>
     <string name="title_favourites">Favourites</string>
     <string name="search_field_text">Search</string>

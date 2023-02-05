@@ -6,7 +6,7 @@ enum class RequestResult {
     FATAL_ERROR
 }
 
-interface IHomeModel {
+interface IDataLoadedModel {
 
     suspend fun getNewData(): RequestResult
 }

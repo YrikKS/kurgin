@@ -3,13 +3,13 @@ package ru.kurgin.tinkoff.homeFragment
 import android.util.Log
 import kotlinx.coroutines.sync.Mutex
 import ru.kurgin.tinkoff.Constants
-import ru.kurgin.tinkoff.homeFragment.homeInterfase.IHomeModel
+import ru.kurgin.tinkoff.homeFragment.homeInterfase.IDataLoadedModel
 import ru.kurgin.tinkoff.homeFragment.homeInterfase.RequestResult
 import ru.kurgin.tinkoff.kinopoiskApi.ApiHelper
 import ru.kurgin.tinkoff.kinopoiskApi.classFromJson.Film
 
 
-class HomeModel(val viewModel: HomeViewModel) : IHomeModel {
+class HomeModel(val viewModel: HomeViewModel) : IDataLoadedModel {
     var listFilms = mutableListOf<Film>()
         private set
     private var currentLoadedPageFromApi = 1
