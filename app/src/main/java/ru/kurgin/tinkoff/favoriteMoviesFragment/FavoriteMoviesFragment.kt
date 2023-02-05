@@ -61,6 +61,9 @@ class FavoriteMoviesFragment : Fragment() {
                                 adapter.films.add(it)
                                 adapter.notifyItemRangeInserted(adapter.films.size - 1, 1)
                             }
+                        } else {
+                            adapter.films.clear()
+                            adapter.notifyDataSetChanged()
                         }
                     }
                 } else {
