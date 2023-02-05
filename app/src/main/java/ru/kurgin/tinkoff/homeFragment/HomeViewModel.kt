@@ -5,7 +5,6 @@ import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.kurgin.tinkoff.Constants
@@ -18,7 +17,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     val listFilms = MutableLiveData<List<Film>>().apply {
         mutableListOf<Film>()
     }
-    var countItemLoadInLastTime = 0
+    private var countItemLoadInLastTime = 0
 
     var drawToast: (String) -> Unit = {
         Toast.makeText(application.applicationContext, it, Toast.LENGTH_SHORT).show()

@@ -10,10 +10,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import ru.kurgin.tinkoff.Constants
-import ru.kurgin.tinkoff.FilmsAdapter
 import ru.kurgin.tinkoff.IFilmActionListener
 import ru.kurgin.tinkoff.MainActivity
 import ru.kurgin.tinkoff.databinding.FragmentFavoriteBinding
@@ -46,11 +44,9 @@ class FavoriteMoviesFragment : Fragment() {
     private fun setupSearch() {
         binding.searchTextField.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                println("beforeTextChanged")
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                println("onTextChanged")
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -83,11 +79,6 @@ class FavoriteMoviesFragment : Fragment() {
         adapter = FilmAdapterForFavoriteMovies(object : IFilmActionListener {
             override fun onFilmDetails(film: Film) {
                 Log.i(Constants.TAG_FOR_LOG, "click on ${film.filmId}")
-                val action =
-                    FavoriteMoviesFragmentDirections.actionNavigationFavoritesToFilmDetailsFragment(
-                        filmId = film.filmId
-                    )
-                findNavController().navigate(action)
             }
 
             override fun addFilmToFavorite(film: Film, bitmap: Bitmap) {
@@ -104,7 +95,6 @@ class FavoriteMoviesFragment : Fragment() {
             adapter.films.clear()
             adapter.notifyDataSetChanged()
             value.forEach {
-                println(it.nameRu)
                 adapter.films.add(it)
                 adapter.notifyItemRangeInserted(adapter.films.size - 1, 1)
             }

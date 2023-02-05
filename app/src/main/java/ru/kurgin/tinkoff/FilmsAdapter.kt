@@ -17,7 +17,6 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import ru.kurgin.tinkoff.databinding.ItemFilmsBinding
 import ru.kurgin.tinkoff.kinopoiskApi.classFromJson.Film
-import java.io.ByteArrayOutputStream
 
 interface IFilmActionListener {
     fun onFilmDetails(film: Film)
@@ -49,6 +48,7 @@ open class FilmsAdapter(
 
     override fun onLongClick(v: View): Boolean {
         if (v.findViewById<ImageView>(R.id.film_poster)?.drawable != null) {
+            v.findViewById<ImageView>(R.id.mark_favorite_film)?.visibility = View.VISIBLE
             filmActionListener.addFilmToFavorite(
                 v.tag as Film,
                 v.findViewById<ImageView>(R.id.film_poster).drawable.toBitmap()
@@ -61,6 +61,11 @@ open class FilmsAdapter(
         val currentFilm = films[position]
         holder.itemView.tag = currentFilm
         with(holder.binding) {
+            if ((fragment.activity as MainActivity).dbManager.isFilmInDb(currentFilm.filmId)) {
+                markFavoriteFilm.visibility = View.VISIBLE
+            } else {
+                markFavoriteFilm.visibility = View.GONE
+            }
             filmTitle.text = currentFilm.nameRu ?: currentFilm.nameEn ?: ""
             yearOfRelease.text = currentFilm.year ?: ""
             progressBar.visibility = View.VISIBLE

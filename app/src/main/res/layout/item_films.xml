@@ -42,13 +42,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginEnd="5dp"
             android:ellipsize="end"
             android:maxLines="3"
             android:text="Name film"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/mark_favorite_film"
             app:layout_constraintStart_toEndOf="@+id/film_poster"
-            app:layout_constraintTop_toTopOf="@+id/film_poster" />
+            app:layout_constraintTop_toTopOf="@+id/film_poster"
+            app:layout_goneMarginEnd="10dp" />
 
         <TextView
             android:id="@+id/year_of_release"
@@ -65,6 +66,16 @@
             app:layout_constraintStart_toStartOf="@+id/film_title"
             app:layout_constraintTop_toBottomOf="@+id/film_title" />
 
+        <ImageView
+            android:id="@+id/mark_favorite_film"
+            android:layout_width="28dp"
+            android:layout_height="31dp"
+            android:layout_marginEnd="10dp"
+            android:src="@android:drawable/btn_star"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/film_title"
+            app:tint="@color/main_components" />
 
         <androidx.constraintlayout.widget.Barrier
             android:layout_width="wrap_content"

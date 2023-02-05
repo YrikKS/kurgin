@@ -34,7 +34,6 @@ class FilmDetailsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        println(FilmDetailsFragmentArgs.fromBundle(requireArguments()).filmId)
         filmDetailsViewModel = FilmDetailsVMProvider(
             FilmDetailsFragmentArgs.fromBundle(requireArguments()).filmId,
             activity?.application!!

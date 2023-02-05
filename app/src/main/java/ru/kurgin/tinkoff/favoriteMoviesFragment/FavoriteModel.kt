@@ -17,7 +17,7 @@ class FavoriteModel(
         private set
 
     suspend fun loadNewData(): DbRequestResult {
-        listFilms = dbManager.getDataFromDb()
+        listFilms = dbManager.getFilmFromDb()
         return DbRequestResult.SUCCESS
     }
 }

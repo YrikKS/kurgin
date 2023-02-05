@@ -1,7 +1,6 @@
 package ru.kurgin.tinkoff.filmDetailsFragment
 
 import android.util.Log
-import kotlinx.coroutines.sync.Mutex
 import ru.kurgin.tinkoff.Constants
 import ru.kurgin.tinkoff.homeFragment.homeInterfase.IDataLoadedModel
 import ru.kurgin.tinkoff.homeFragment.homeInterfase.RequestResult

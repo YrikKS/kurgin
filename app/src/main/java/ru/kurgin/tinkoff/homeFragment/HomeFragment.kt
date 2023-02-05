@@ -34,9 +34,6 @@ class HomeFragment : Fragment() {
     ): View {
         homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-//        binding.button.setOnClickListener {
-//            findNavController().navigate(R.id.action_navigation_home_to_filmDetailsFragment)
-//        }
         setupRecyclerView()
         setupSearch()
         return binding.root
@@ -45,11 +42,9 @@ class HomeFragment : Fragment() {
     private fun setupSearch() {
         binding.searchTextFieldHome.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                println("beforeTextChanged")
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                println("onTextChanged")
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -71,7 +66,6 @@ class HomeFragment : Fragment() {
                     adapter.films.clear()
                     homeViewModel.listFilms.value?.forEach {
                         adapter.films.add(it)
-//                        adapter.notifyItemRangeInserted(adapter.films.size - 1, 1)
                     }
                     adapter.notifyDataSetChanged()
                     isSearch = false
@@ -94,7 +88,7 @@ class HomeFragment : Fragment() {
                 Log.i(Constants.TAG_FOR_LOG, "long click on ${film.nameRu}")
                 val byteArrayOutputStream = ByteArrayOutputStream()
                 bitmap.compress(Bitmap.CompressFormat.PNG, 0, byteArrayOutputStream)
-                (activity as MainActivity).dbManager.insertToDb(
+                (activity as MainActivity).dbManager.insertFilmToDb(
                     film,
                     byteArrayOutputStream.toByteArray()
                 )

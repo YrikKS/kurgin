@@ -19,11 +19,7 @@
         android:id="@+id/navigation_favorites"
         android:name="ru.kurgin.tinkoff.favoriteMoviesFragment.FavoriteMoviesFragment"
         android:label="@string/title_favourites"
-        tools:layout="@layout/fragment_favorite" >
-        <action
-            android:id="@+id/action_navigation_favorites_to_filmDetailsFragment"
-            app:destination="@id/filmDetailsFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_favorite" />
     <fragment
         android:id="@+id/filmDetailsFragment"
         android:name="ru.kurgin.tinkoff.filmDetailsFragment.FilmDetailsFragment"
