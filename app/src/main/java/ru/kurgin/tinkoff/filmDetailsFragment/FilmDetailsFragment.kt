@@ -11,6 +11,8 @@ import ru.kurgin.tinkoff.databinding.FragmentFilmDetailsBinding
 class FilmDetailsFragment : Fragment() {
     private var _binding: FragmentFilmDetailsBinding? = null
     private val binding get() = _binding!!
+    private var filmId = FilmDetailsFragmentArgs.fromBundle(requireArguments()).filmId
+
 
     override fun onCreateView(
         inflater: LayoutInflater,

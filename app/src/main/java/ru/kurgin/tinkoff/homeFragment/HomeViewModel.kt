@@ -1,15 +1,56 @@
 package ru.kurgin.tinkoff.homeFragment
 
+import android.app.Application
+import android.util.Log
+import android.widget.Toast
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
+import ru.kurgin.tinkoff.Constants
+import ru.kurgin.tinkoff.homeFragment.homeInterfase.RequestResult
 import ru.kurgin.tinkoff.kinopoiskApi.classFromJson.Film
 
-class HomeViewModel : ViewModel() {
-    val homeModel = HomeModel(this)
-    private val _listFilms = MutableLiveData<List<Film>>().apply {
+class HomeViewModel(application: Application) : AndroidViewModel(application) {
+    private val homeModel = HomeModel(this)
+    var drawToast: (String) -> Unit
+    val listFilms = MutableLiveData<List<Film>>().apply {
         mutableListOf<Film>()
     }
-    val listFilms: MutableLiveData<List<Film>> = _listFilms
+    var countItemLoadInLastTime = 0
 
+    init {
+        drawToast = {
+            Toast.makeText(application.applicationContext, it, Toast.LENGTH_SHORT).show()
+        }
+    }
 
+    init {
+        setUpdateFilms()
+    }
+
+    fun setUpdateFilms() {
+        viewModelScope.launch {
+            try {
+                Log.i(Constants.TAG_FOR_LOG, "vm startLoad")
+                when (homeModel.getNewData()) {
+                    RequestResult.OK -> {
+                        println("all ok")
+                        listFilms.value = homeModel.listFilms.apply {
+                            countItemLoadInLastTime = size
+                        }
+                    }
+                    RequestResult.DATA_RAN_OUT -> {
+                        drawToast("data ran out")
+                    }
+                    RequestResult.FATAL_ERROR -> {
+                        drawToast("network error")
+                    }
+                }
+            } catch (ex: Exception) {
+                ex.printStackTrace()
+            }
+        }
+    }
 }

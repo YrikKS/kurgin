@@ -2,7 +2,7 @@ package ru.kurgin.tinkoff
 
 object Constants {
     const val TAG_FOR_LOG = "kinopoisk tag"
-
+    const val ERROR_WHILE_LOAD_POSTER = "error while load poster"
 
 
     //retrofit constants
